@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/clinical_correlation/presentation/screens/clinical_correlation_screen.dart';
 import '../../features/digital_twin/presentation/screens/digital_twin_screen.dart';
+import '../../features/order_execution/presentation/screens/order_execution_screen.dart';
 import '../../features/risk_watch/presentation/screens/risk_watch_screen.dart';
 import '../utils/constants.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
@@ -84,11 +85,32 @@ final routerProvider = Provider<GoRouter>((ref) {
                 name: 'digital-twin',
                 builder: (context, state) {
                   final patientId = state.pathParameters['patientId']!;
+                  final patientName =
+                      state.uri.queryParameters['name'] ?? 'Unknown Patient';
+
                   return DefaultTabController(
                     length: 7,
                     child: DigitalTwinScreen(patientId: patientId),
                   );
                 },
+                routes: [
+                  // Add nested order execution route
+                  GoRoute(
+                    path: 'orders',
+                    name: 'orders',
+                    builder: (context, state) {
+                      final patientId = state.pathParameters['patientId']!;
+                      final patientName =
+                          state.uri.queryParameters['name'] ??
+                          'Unknown Patient';
+
+                      return OrderExecutionScreen(
+                        patientId: patientId,
+                        patientName: patientName,
+                      );
+                    },
+                  ),
+                ],
               ),
             ],
           ),
@@ -129,13 +151,6 @@ final routerProvider = Provider<GoRouter>((ref) {
             name: 'clinical-correlation',
             builder: (context, state) =>
                 const ClinicalCorrelationScreen(patientId: 'demo-patient'),
-          ),
-
-          // Order Execution
-          GoRoute(
-            path: RoutePaths.orderExecution,
-            name: 'order-execution',
-            builder: (context, state) => const OrderExecutionScreen(),
           ),
 
           // Telepresence
@@ -284,15 +299,6 @@ class PortfolioSummaryScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class OrderExecutionScreen extends StatelessWidget {
-  const OrderExecutionScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
 
