@@ -160,3 +160,21 @@ flutter pub run build_runner build --delete-conflicting-outputs
 ```bash
 flutter pub run build_runner build --delete-conflicting-outputs
 ```
+
+## Files Requiring Code Generation (Phase 9)
+
+### Freezed Generation:
+
+- `lib/features/portfolio/domain/entities/portfolio_summary.dart`
+- `lib/features/scheduling/domain/entities/schedule.dart`
+
+### Riverpod Generation:
+
+- `lib/features/portfolio/presentation/state/portfolio_notifier.dart`
+- `lib/features/scheduling/presentation/state/scheduling_notifier.dart`
+
+## Run Code Generation:
+
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```

@@ -7,7 +7,9 @@ import '../../features/clinical_correlation/presentation/screens/clinical_correl
 import '../../features/collaboration/presentation/screens/collaboration_screen.dart';
 import '../../features/digital_twin/presentation/screens/digital_twin_screen.dart';
 import '../../features/order_execution/presentation/screens/order_execution_screen.dart';
+import '../../features/portfolio/presentation/screens/portfolio_summary_screen.dart';
 import '../../features/risk_watch/presentation/screens/risk_watch_screen.dart';
+import '../../features/scheduling/presentation/screens/scheduling_screen.dart';
 import '../../features/telepresence/presentation/screens/telepresence_screen.dart';
 import '../../features/wallet/presentation/screens/wallet_screen.dart';
 import '../utils/constants.dart';
@@ -209,59 +211,6 @@ class HomeDashboard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             'Coming in Phase 2+',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class SchedulingScreen extends StatelessWidget {
-  const SchedulingScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.calendar_today, size: 64, color: Colors.grey),
-          const SizedBox(height: 16),
-          Text('Scheduling', style: Theme.of(context).textTheme.headlineSmall),
-          const SizedBox(height: 8),
-          Text(
-            'Phase 8: Smart Scheduling',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class PortfolioSummaryScreen extends StatelessWidget {
-  const PortfolioSummaryScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.analytics, size: 64, color: Colors.grey),
-          const SizedBox(height: 16),
-          Text(
-            'AI Portfolio Summary',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Phase 9: Clinical Intelligence Dashboard',
             style: Theme.of(
               context,
             ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
