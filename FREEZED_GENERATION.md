@@ -110,3 +110,19 @@ flutter pub run build_runner build --delete-conflicting-outputs
 ```bash
 flutter pub run build_runner build --delete-conflicting-outputs
 ```
+
+## Files Requiring Code Generation (Phase 6)
+
+### Freezed Generation:
+
+- `lib/features/telepresence/domain/entities/consultation.dart`
+
+### Riverpod Generation:
+
+- `lib/features/telepresence/presentation/state/telepresence_notifier.dart`
+
+## Run Code Generation:
+
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```

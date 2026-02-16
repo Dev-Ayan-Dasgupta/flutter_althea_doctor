@@ -6,6 +6,7 @@ import '../../features/clinical_correlation/presentation/screens/clinical_correl
 import '../../features/digital_twin/presentation/screens/digital_twin_screen.dart';
 import '../../features/order_execution/presentation/screens/order_execution_screen.dart';
 import '../../features/risk_watch/presentation/screens/risk_watch_screen.dart';
+import '../../features/telepresence/presentation/screens/telepresence_screen.dart';
 import '../utils/constants.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
@@ -85,8 +86,6 @@ final routerProvider = Provider<GoRouter>((ref) {
                 name: 'digital-twin',
                 builder: (context, state) {
                   final patientId = state.pathParameters['patientId']!;
-                  final patientName =
-                      state.uri.queryParameters['name'] ?? 'Unknown Patient';
 
                   return DefaultTabController(
                     length: 7,
@@ -299,15 +298,6 @@ class PortfolioSummaryScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class TelepresenceScreen extends StatelessWidget {
-  const TelepresenceScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
 
