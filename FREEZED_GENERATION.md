@@ -62,3 +62,19 @@ flutter pub run build_runner build --delete-conflicting-outputs
 ```bash
 flutter pub run build_runner build --delete-conflicting-outputs
 ```
+
+## Files Requiring Code Generation (Phase 3)
+
+### Freezed Generation:
+
+- `lib/features/digital_twin/domain/entities/vitals_timeline.dart`
+
+### Riverpod Generation:
+
+- `lib/features/digital_twin/presentation/state/digital_twin_notifier.dart`
+
+## Run Code Generation:
+
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```

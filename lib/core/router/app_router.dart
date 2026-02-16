@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
+import '../../features/digital_twin/presentation/screens/digital_twin_screen.dart';
 import '../../features/risk_watch/presentation/screens/risk_watch_screen.dart';
 import '../utils/constants.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
@@ -82,7 +83,10 @@ final routerProvider = Provider<GoRouter>((ref) {
                 name: 'digital-twin',
                 builder: (context, state) {
                   final patientId = state.pathParameters['patientId']!;
-                  return DigitalTwinScreen(patientId: patientId);
+                  return DefaultTabController(
+                    length: 5,
+                    child: DigitalTwinScreen(patientId: patientId),
+                  );
                 },
               ),
             ],
@@ -191,44 +195,6 @@ class HomeDashboard extends StatelessWidget {
             ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class DigitalTwinScreen extends StatelessWidget {
-  final String patientId;
-
-  const DigitalTwinScreen({super.key, required this.patientId});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Digital Twin')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(Icons.person, size: 64, color: Colors.grey),
-            const SizedBox(height: 16),
-            Text(
-              'Digital Twin',
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Patient ID: $patientId',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Phase 3: Digital Twin Timeline',
-              style: Theme.of(
-                context,
-              ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
-            ),
-          ],
-        ),
       ),
     );
   }
