@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
+import '../../features/clinical_correlation/presentation/screens/clinical_correlation_screen.dart';
 import '../../features/digital_twin/presentation/screens/digital_twin_screen.dart';
 import '../../features/risk_watch/presentation/screens/risk_watch_screen.dart';
 import '../utils/constants.dart';
@@ -84,7 +85,7 @@ final routerProvider = Provider<GoRouter>((ref) {
                 builder: (context, state) {
                   final patientId = state.pathParameters['patientId']!;
                   return DefaultTabController(
-                    length: 5,
+                    length: 7,
                     child: DigitalTwinScreen(patientId: patientId),
                   );
                 },
@@ -126,7 +127,8 @@ final routerProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: RoutePaths.clinicalCorrelation,
             name: 'clinical-correlation',
-            builder: (context, state) => const ClinicalCorrelationScreen(),
+            builder: (context, state) =>
+                const ClinicalCorrelationScreen(patientId: 'demo-patient'),
           ),
 
           // Order Execution
@@ -282,15 +284,6 @@ class PortfolioSummaryScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class ClinicalCorrelationScreen extends StatelessWidget {
-  const ClinicalCorrelationScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
 

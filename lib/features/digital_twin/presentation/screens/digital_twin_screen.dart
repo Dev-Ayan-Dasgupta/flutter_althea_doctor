@@ -4,6 +4,7 @@ import '../../../../core/theme/color_palette.dart';
 import '../../../../core/theme/typography.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../../../core/widgets/custom_button.dart';
+import '../../../clinical_correlation/presentation/screens/clinical_correlation_screen.dart';
 import '../../../risk_watch/presentation/widgets/csi_badge.dart';
 import '../state/digital_twin_notifier.dart';
 import '../widgets/blood_pressure_chart.dart';
@@ -194,10 +195,12 @@ class DigitalTwinScreen extends ConsumerWidget {
       child: TabBar(
         isScrollable: true,
         tabs: const [
+          Tab(text: 'Overview', icon: Icon(Icons.dashboard, size: 20)),
           Tab(text: 'Blood Pressure', icon: Icon(Icons.favorite, size: 20)),
           Tab(text: 'Heart Rate', icon: Icon(Icons.monitor_heart, size: 20)),
           Tab(text: 'SpO2', icon: Icon(Icons.air, size: 20)),
           Tab(text: 'Glucose', icon: Icon(Icons.water_drop, size: 20)),
+          Tab(text: 'Insights', icon: Icon(Icons.psychology, size: 20)), // NEW
           Tab(text: 'Notes', icon: Icon(Icons.note, size: 20)),
         ],
         onTap: (index) {
@@ -216,6 +219,9 @@ class DigitalTwinScreen extends ConsumerWidget {
 
     return TabBarView(
       children: [
+        // Overview (NEW)
+        _buildOverviewTab(context, state, isDark),
+
         // Blood Pressure
         SingleChildScrollView(
           child: BloodPressureChart(
@@ -265,9 +271,34 @@ class DigitalTwinScreen extends ConsumerWidget {
           ),
         ),
 
+        // Clinical Insights (NEW)
+        ClinicalCorrelationScreen(patientId: patientId),
+
         // Caregiver Notes
         CaregiverNotesList(notes: timeline.notes),
       ],
+    );
+  }
+
+  // Add this new method
+  Widget _buildOverviewTab(
+    BuildContext context,
+    DigitalTwinState state,
+    bool isDark,
+  ) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Overview Coming Soon', style: AppTypography.titleLarge()),
+          const SizedBox(height: 8),
+          Text(
+            'This will show a summary of all vitals and trends.',
+            style: AppTypography.bodyMedium(),
+          ),
+        ],
+      ),
     );
   }
 }
