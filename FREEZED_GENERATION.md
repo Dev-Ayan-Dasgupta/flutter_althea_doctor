@@ -34,3 +34,31 @@ After adding these files, run code generation:
 - `observation.g.dart`
 - `medication_request.freezed.dart`
 - `medication_request.g.dart`
+
+## Riverpod Code Generation
+
+After creating files with `@riverpod` or `@Riverpod()` annotations, run:
+
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```
+
+## Files Requiring Code Generation (Phase 1)
+
+### Freezed Generation:
+
+- `lib/features/auth/domain/entities/doctor.dart`
+- `lib/features/auth/domain/entities/auth_state.dart`
+- `lib/features/auth/domain/entities/login_credentials.dart`
+- `lib/shared/models/fhir/practitioner.dart`
+
+### Riverpod Generation:
+
+- `lib/features/auth/presentation/state/auth_notifier.dart`
+- `lib/features/auth/providers/auth_providers.dart`
+
+## Run Code Generation:
+
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```

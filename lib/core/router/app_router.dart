@@ -1,14 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../utils/constants.dart';
+import '../../features/auth/presentation/screens/splash_screen.dart';
+import '../../features/auth/presentation/screens/login_screen.dart';
+import '../../features/home/presentation/widgets/app_shell.dart';
+import '../../features/home/presentation/screens/profile_screen.dart';
 
-/// App router configuration using go_router
-class AppRouter {
-  AppRouter._();
+/// Router provider
+final routerProvider = Provider<GoRouter>((ref) {
+  final isAuthenticated = ref.watch(isAuthenticatedProvider);
 
-  static final GoRouter router = GoRouter(
+  return GoRouter(
     initialLocation: RoutePaths.splash,
     debugLogDiagnostics: true,
+    redirect: (context, state) {
+      final isOnSplash = state.matchedLocation == RoutePaths.splash;
+      final isOnLogin = state.matchedLocation == RoutePaths.login;
+
+      // Allow splash screen always
+      if (isOnSplash) return null;
+
+      // If not authenticated and not on login, redirect to login
+      if (!isAuthenticated && !isOnLogin) {
+        return RoutePaths.login;
+      }
+
+      // If authenticated and on login, redirect to home
+      if (isAuthenticated && isOnLogin) {
+        return RoutePaths.home;
+      }
+
+      // No redirect needed
+      return null;
+    },
     routes: [
       // Splash Screen
       GoRoute(
@@ -24,34 +50,71 @@ class AppRouter {
         builder: (context, state) => const LoginScreen(),
       ),
 
-      // Home Shell with Bottom Navigation
+      // Protected Routes with App Shell
       ShellRoute(
         builder: (context, state, child) {
-          return HomeShell(child: child);
+          return AppShell(currentPath: state.matchedLocation, child: child);
         },
         routes: [
           // Home Dashboard
           GoRoute(
             path: RoutePaths.home,
             name: 'home',
-            builder: (context, state) => const HomeDashboard(),
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: const HomeDashboard(),
+            ),
           ),
 
-          // Risk Watch (Command Center)
+          // Risk Watch
           GoRoute(
             path: RoutePaths.riskWatch,
             name: 'risk-watch',
-            builder: (context, state) => const RiskWatchScreen(),
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: const RiskWatchScreen(),
+            ),
+            routes: [
+              // Digital Twin (nested under risk watch)
+              GoRoute(
+                path: 'patient/:patientId',
+                name: 'digital-twin',
+                builder: (context, state) {
+                  final patientId = state.pathParameters['patientId']!;
+                  return DigitalTwinScreen(patientId: patientId);
+                },
+              ),
+            ],
           ),
 
-          // Digital Twin
+          // Scheduling
           GoRoute(
-            path: '${RoutePaths.digitalTwin}/:patientId',
-            name: 'digital-twin',
-            builder: (context, state) {
-              final patientId = state.pathParameters['patientId']!;
-              return DigitalTwinScreen(patientId: patientId);
-            },
+            path: RoutePaths.scheduling,
+            name: 'scheduling',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: const SchedulingScreen(),
+            ),
+          ),
+
+          // Wallet
+          GoRoute(
+            path: RoutePaths.wallet,
+            name: 'wallet',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: const WalletScreen(),
+            ),
+          ),
+
+          // Portfolio Summary
+          GoRoute(
+            path: RoutePaths.portfolioSummary,
+            name: 'portfolio-summary',
+            pageBuilder: (context, state) => NoTransitionPage(
+              key: state.pageKey,
+              child: const PortfolioSummaryScreen(),
+            ),
           ),
 
           // Clinical Correlation
@@ -82,37 +145,16 @@ class AppRouter {
             builder: (context, state) => const AmbientScribeScreen(),
           ),
 
-          // Collaboration (MDT War Room)
+          // Collaboration
           GoRoute(
             path: RoutePaths.collaboration,
             name: 'collaboration',
             builder: (context, state) => const CollaborationScreen(),
           ),
-
-          // Wallet
-          GoRoute(
-            path: RoutePaths.wallet,
-            name: 'wallet',
-            builder: (context, state) => const WalletScreen(),
-          ),
-
-          // Scheduling
-          GoRoute(
-            path: RoutePaths.scheduling,
-            name: 'scheduling',
-            builder: (context, state) => const SchedulingScreen(),
-          ),
-
-          // Portfolio Summary
-          GoRoute(
-            path: RoutePaths.portfolioSummary,
-            name: 'portfolio-summary',
-            builder: (context, state) => const PortfolioSummaryScreen(),
-          ),
         ],
       ),
 
-      // Profile (outside shell)
+      // Profile (outside shell, full screen)
       GoRoute(
         path: RoutePaths.profile,
         name: 'profile',
@@ -121,58 +163,34 @@ class AppRouter {
     ],
     errorBuilder: (context, state) => ErrorScreen(error: state.error),
   );
-}
+});
 
 // Placeholder screens (will be implemented in phases)
-
-class SplashScreen extends StatelessWidget {
-  const SplashScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Splash Screen - Phase 1')));
-  }
-}
-
-class LoginScreen extends StatelessWidget {
-  const LoginScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Login Screen - Phase 1')));
-  }
-}
-
-class HomeShell extends StatelessWidget {
-  final Widget child;
-
-  const HomeShell({super.key, required this.child});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: child,
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.people), label: 'Patients'),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today),
-            label: 'Schedule',
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 class HomeDashboard extends StatelessWidget {
   const HomeDashboard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Home Dashboard - Phase 2+')),
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.construction, size: 64, color: Colors.grey),
+          const SizedBox(height: 16),
+          Text(
+            'Home Dashboard',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Coming in Phase 2+',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -182,7 +200,26 @@ class RiskWatchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Risk Watch - Phase 2')));
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.monitor_heart, size: 64, color: Colors.grey),
+          const SizedBox(height: 16),
+          Text(
+            'Risk Watch - Command Center',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Phase 2: Clinical Risk Watch',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -194,7 +231,117 @@ class DigitalTwinScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(child: Text('Digital Twin - Phase 3\nPatient: $patientId')),
+      appBar: AppBar(title: const Text('Digital Twin')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.person, size: 64, color: Colors.grey),
+            const SizedBox(height: 16),
+            Text(
+              'Digital Twin',
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Patient ID: $patientId',
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Phase 3: Digital Twin Timeline',
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SchedulingScreen extends StatelessWidget {
+  const SchedulingScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.calendar_today, size: 64, color: Colors.grey),
+          const SizedBox(height: 16),
+          Text('Scheduling', style: Theme.of(context).textTheme.headlineSmall),
+          const SizedBox(height: 8),
+          Text(
+            'Phase 8: Smart Scheduling',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class WalletScreen extends StatelessWidget {
+  const WalletScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.account_balance_wallet,
+            size: 64,
+            color: Colors.grey,
+          ),
+          const SizedBox(height: 16),
+          Text(
+            'Physician Wallet',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Phase 8: Financial Hub',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PortfolioSummaryScreen extends StatelessWidget {
+  const PortfolioSummaryScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(Icons.analytics, size: 64, color: Colors.grey),
+          const SizedBox(height: 16),
+          Text(
+            'AI Portfolio Summary',
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Phase 9: Clinical Intelligence Dashboard',
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -204,9 +351,7 @@ class ClinicalCorrelationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Clinical Correlation - Phase 4')),
-    );
+    return const Placeholder();
   }
 }
 
@@ -215,9 +360,7 @@ class OrderExecutionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Order Execution - Phase 5')),
-    );
+    return const Placeholder();
   }
 }
 
@@ -226,7 +369,7 @@ class TelepresenceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Telepresence - Phase 6')));
+    return const Placeholder();
   }
 }
 
@@ -235,9 +378,7 @@ class AmbientScribeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Ambient Scribe - Phase 7')),
-    );
+    return const Placeholder();
   }
 }
 
@@ -246,48 +387,7 @@ class CollaborationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Collaboration - Phase 8')));
-  }
-}
-
-class WalletScreen extends StatelessWidget {
-  const WalletScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Wallet - Phase 8')));
-  }
-}
-
-class SchedulingScreen extends StatelessWidget {
-  const SchedulingScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Scheduling - Phase 8')));
-  }
-}
-
-class PortfolioSummaryScreen extends StatelessWidget {
-  const PortfolioSummaryScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Portfolio Summary - Phase 9')),
-    );
-  }
-}
-
-class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Profile')),
-      body: const Center(child: Text('Profile Screen')),
-    );
+    return const Placeholder();
   }
 }
 
@@ -300,7 +400,20 @@ class ErrorScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Text('Error: ${error?.toString() ?? 'Unknown error'}'),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 64, color: Colors.red),
+            const SizedBox(height: 16),
+            Text('Error', style: Theme.of(context).textTheme.headlineSmall),
+            const SizedBox(height: 8),
+            Text(
+              error?.toString() ?? 'Unknown error',
+              style: Theme.of(context).textTheme.bodyMedium,
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
       ),
     );
   }
