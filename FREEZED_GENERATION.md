@@ -142,3 +142,21 @@ flutter pub run build_runner build --delete-conflicting-outputs
 ```bash
 flutter pub run build_runner build --delete-conflicting-outputs
 ```
+
+## Files Requiring Code Generation (Phase 8)
+
+### Freezed Generation:
+
+- `lib/features/collaboration/domain/entities/care_team.dart`
+- `lib/features/wallet/domain/entities/wallet.dart`
+
+### Riverpod Generation:
+
+- `lib/features/collaboration/presentation/state/collaboration_notifier.dart`
+- `lib/features/wallet/presentation/state/wallet_notifier.dart`
+
+## Run Code Generation:
+
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```

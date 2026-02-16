@@ -4,10 +4,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/ambient_scribe/presentation/screens/ambient_scribe_screen.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/clinical_correlation/presentation/screens/clinical_correlation_screen.dart';
+import '../../features/collaboration/presentation/screens/collaboration_screen.dart';
 import '../../features/digital_twin/presentation/screens/digital_twin_screen.dart';
 import '../../features/order_execution/presentation/screens/order_execution_screen.dart';
 import '../../features/risk_watch/presentation/screens/risk_watch_screen.dart';
 import '../../features/telepresence/presentation/screens/telepresence_screen.dart';
+import '../../features/wallet/presentation/screens/wallet_screen.dart';
 import '../utils/constants.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
@@ -242,38 +244,6 @@ class SchedulingScreen extends StatelessWidget {
   }
 }
 
-class WalletScreen extends StatelessWidget {
-  const WalletScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(
-            Icons.account_balance_wallet,
-            size: 64,
-            color: Colors.grey,
-          ),
-          const SizedBox(height: 16),
-          Text(
-            'Physician Wallet',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Phase 8: Financial Hub',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 class PortfolioSummaryScreen extends StatelessWidget {
   const PortfolioSummaryScreen({super.key});
 
@@ -299,15 +269,6 @@ class PortfolioSummaryScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class CollaborationScreen extends StatelessWidget {
-  const CollaborationScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
 
