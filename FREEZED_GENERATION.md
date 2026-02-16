@@ -126,3 +126,19 @@ flutter pub run build_runner build --delete-conflicting-outputs
 ```bash
 flutter pub run build_runner build --delete-conflicting-outputs
 ```
+
+## Files Requiring Code Generation (Phase 7)
+
+### Freezed Generation:
+
+- `lib/features/ambient_scribe/domain/entities/clinical_note.dart`
+
+### Riverpod Generation:
+
+- `lib/features/ambient_scribe/presentation/state/scribe_notifier.dart`
+
+## Run Code Generation:
+
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```

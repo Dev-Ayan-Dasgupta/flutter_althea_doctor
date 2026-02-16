@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../features/ambient_scribe/presentation/screens/ambient_scribe_screen.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
 import '../../features/clinical_correlation/presentation/screens/clinical_correlation_screen.dart';
 import '../../features/digital_twin/presentation/screens/digital_twin_screen.dart';
@@ -298,15 +299,6 @@ class PortfolioSummaryScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-class AmbientScribeScreen extends StatelessWidget {
-  const AmbientScribeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
   }
 }
 
