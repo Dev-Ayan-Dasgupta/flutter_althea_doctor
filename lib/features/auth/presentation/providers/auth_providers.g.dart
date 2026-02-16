@@ -196,7 +196,7 @@ final class CurrentDoctorProvider
   }
 }
 
-String _$currentDoctorHash() => r'c76a5fc02fc96694d18e6660fe3ee180435a69b6';
+String _$currentDoctorHash() => r'f8b0d03d8c18182429bd86c112a43faa87487671';
 
 /// Is authenticated provider (derived from auth state)
 
@@ -242,4 +242,4 @@ final class IsAuthenticatedProvider
   }
 }
 
-String _$isAuthenticatedHash() => r'2993a6f4ca052a76312227e13e1ddc232c60407c';
+String _$isAuthenticatedHash() => r'b1b6e1e10e8aa4a9ae45828af9370e878a803e6f';

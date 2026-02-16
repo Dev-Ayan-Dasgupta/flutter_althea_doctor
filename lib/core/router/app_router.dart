@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../features/auth/presentation/providers/auth_providers.dart';
+import '../../features/risk_watch/presentation/screens/risk_watch_screen.dart';
 import '../utils/constants.dart';
 import '../../features/auth/presentation/screens/splash_screen.dart';
 import '../../features/auth/presentation/screens/login_screen.dart';
@@ -185,34 +186,6 @@ class HomeDashboard extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             'Coming in Phase 2+',
-            style: Theme.of(
-              context,
-            ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class RiskWatchScreen extends StatelessWidget {
-  const RiskWatchScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Icon(Icons.monitor_heart, size: 64, color: Colors.grey),
-          const SizedBox(height: 16),
-          Text(
-            'Risk Watch - Command Center',
-            style: Theme.of(context).textTheme.headlineSmall,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Phase 2: Clinical Risk Watch',
             style: Theme.of(
               context,
             ).textTheme.bodyMedium?.copyWith(color: Colors.grey),
