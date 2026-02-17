@@ -40,6 +40,5 @@ class ThemeNotifier extends _$ThemeNotifier {
       case AppThemeMode.system:
         return material.ThemeMode.system;
     }
-    throw UnimplementedError('Unknown theme mode: $state');
   }
 }
