@@ -1,4 +1,4 @@
-import '../domain/entities/doctor_profile.dart';
+import '../../domain/entities/doctor_profile.dart';
 
 class MockProfileService {
   static DoctorProfile generateProfile(String doctorId) {

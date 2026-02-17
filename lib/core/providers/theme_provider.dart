@@ -1,48 +1,45 @@
-import 'package:flutter_althea_doctor/core/providers/theme_provider.dart'
-    as flutter;
+import 'package:flutter/material.dart' as material;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 part 'theme_provider.g.dart';
 
-enum ThemeMode { light, dark, system }
+enum AppThemeMode { light, dark, system }
 
 @riverpod
 class ThemeNotifier extends _$ThemeNotifier {
   static const String _themeKey = 'theme_mode';
 
   @override
-  ThemeMode build() {
+  AppThemeMode build() {
     _loadTheme();
-    return ThemeMode.system;
+    return AppThemeMode.system;
   }
 
   Future<void> _loadTheme() async {
     final prefs = await SharedPreferences.getInstance();
     final themeName = prefs.getString(_themeKey) ?? 'system';
-    state = ThemeMode.values.firstWhere(
+    state = AppThemeMode.values.firstWhere(
       (e) => e.name == themeName,
-      orElse: () => ThemeMode.system,
+      orElse: () => AppThemeMode.system,
     );
   }
 
-  Future<void> setTheme(ThemeMode mode) async {
+  Future<void> setTheme(AppThemeMode mode) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_themeKey, mode.name);
     state = mode;
   }
 
-  ThemeModeFlutter get flutterThemeMode {
+  material.ThemeMode get flutterThemeMode {
     switch (state) {
-      case ThemeMode.light:
-        return ThemeModeFlutter.light;
-      case ThemeMode.dark:
-        return ThemeModeFlutter.dark;
-      case ThemeMode.system:
-        return ThemeModeFlutter.system;
+      case AppThemeMode.light:
+        return material.ThemeMode.light;
+      case AppThemeMode.dark:
+        return material.ThemeMode.dark;
+      case AppThemeMode.system:
+        return material.ThemeMode.system;
     }
+    throw UnimplementedError('Unknown theme mode: $state');
   }
 }
-
-// Alias to avoid conflict with Flutter's ThemeMode
-typedef ThemeModeFlutter = flutter.ThemeMode;

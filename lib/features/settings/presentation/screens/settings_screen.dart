@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../../../core/providers/theme_provider.dart';
 import '../../../../core/theme/typography.dart';
-import '../../../../core/providers/theme_provider.dart' as app_theme;
+import '../../../../core/providers/theme_provider.dart';
 import '../widgets/settings_list_tile.dart';
 import '../widgets/settings_switch_tile.dart';
 import '../widgets/settings_section_header.dart';
@@ -174,13 +173,13 @@ class SettingsScreen extends ConsumerWidget {
     );
   }
 
-  String _getThemeLabel(app_theme.ThemeMode mode) {
+  String _getThemeLabel(AppThemeMode mode) {
     switch (mode) {
-      case app_theme.ThemeMode.light:
+      case AppThemeMode.light:
         return 'Light';
-      case app_theme.ThemeMode.dark:
+      case AppThemeMode.dark:
         return 'Dark';
-      case app_theme.ThemeMode.system:
+      case AppThemeMode.system:
         return 'System Default';
     }
   }
@@ -188,7 +187,7 @@ class SettingsScreen extends ConsumerWidget {
   void _showThemeDialog(
     BuildContext context,
     WidgetRef ref,
-    app_theme.ThemeMode currentMode,
+    AppThemeMode currentMode,
   ) {
     showDialog(
       context: context,
@@ -197,27 +196,27 @@ class SettingsScreen extends ConsumerWidget {
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            RadioListTile<app_theme.ThemeMode>(
+            RadioListTile<AppThemeMode>(
               title: const Text('Light'),
-              value: app_theme.ThemeMode.light,
+              value: AppThemeMode.light,
               groupValue: currentMode,
               onChanged: (value) {
                 ref.read(themeProvider.notifier).setTheme(value!);
                 Navigator.pop(context);
               },
             ),
-            RadioListTile<app_theme.ThemeMode>(
+            RadioListTile<AppThemeMode>(
               title: const Text('Dark'),
-              value: app_theme.ThemeMode.dark,
+              value: AppThemeMode.dark,
               groupValue: currentMode,
               onChanged: (value) {
                 ref.read(themeProvider.notifier).setTheme(value!);
                 Navigator.pop(context);
               },
             ),
-            RadioListTile<app_theme.ThemeMode>(
+            RadioListTile<AppThemeMode>(
               title: const Text('System Default'),
-              value: app_theme.ThemeMode.system,
+              value: AppThemeMode.system,
               groupValue: currentMode,
               onChanged: (value) {
                 ref.read(themeProvider.notifier).setTheme(value!);
